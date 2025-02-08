@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && nodemon dist/src/server.js"
+    "div": "npx tsc && nodemon dist/src/server.js",
+    "start": "npx tsc && node dist/src/server.js"
   },
   "keywords": [],
   "author": "",
