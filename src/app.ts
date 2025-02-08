@@ -13,7 +13,7 @@ class App {
 
         // this.setMiddleware();
         // this.initRoutes()
-        // this.setErrorHandling()
+        this.setErrorHandling()
     }
     // setMiddleware() {
     // }

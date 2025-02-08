@@ -1,4 +1,5 @@
 import App from "./app.js";
+import ErrorHandling from "./middleware/globalErrorHandling.js";
 
-let app = new App()
+let app = new App(new ErrorHandling())
 app.listen()
