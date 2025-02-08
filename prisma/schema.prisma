@@ -9,17 +9,18 @@ datasource db {
 
 model Contact {
   id         String     @id @default(uuid())
-  first_name String
-  last_name  String
+  first_name String     @map("first_name")
+  last_name  String     @map("last_name")
   email      String
   company    String
-  balance    Decimal    @default(0.00)
-  isDeleted  Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  balance    Decimal?   @default(0.00)
+  isDeleted  Boolean?   @default(false)
+  createdAt  DateTime?  @default(now())
+  updatedAt  DateTime?  @updatedAt
   AuditLog   AuditLog[]
 
   @@unique([email, company])
+  @@map("Contact")
 }
 
 model AuditLog {

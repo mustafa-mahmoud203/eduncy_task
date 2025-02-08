@@ -27,7 +27,7 @@ class App {
             })
         );
     }
-    
+
     // initRoutes() {
     // }
     setErrorHandling() {

@@ -8,10 +8,10 @@ CREATE TABLE "Contact" (
     "last_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "company" TEXT NOT NULL,
-    "balance" DECIMAL(65,30) NOT NULL DEFAULT 0.00,
-    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "balance" DECIMAL(65,30) DEFAULT 0.00,
+    "isDeleted" BOOLEAN DEFAULT false,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "Contact_pkey" PRIMARY KEY ("id")
 );
