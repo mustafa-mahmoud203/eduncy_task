@@ -1,6 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import AppError from './utils/appError.js';
 import ErrorHandling from './middleware/globalErrorHandling.js';
+import cors from 'cors';
 
 class App {
     private app: Express;
@@ -11,12 +12,22 @@ class App {
         this.app = express()
         this.port = this.port = parseInt(process.env.PORT || '3000', 10);
 
-        // this.setMiddleware();
+        this.setMiddleware();
         // this.initRoutes()
         this.setErrorHandling()
     }
-    // setMiddleware() {
-    // }
+    setMiddleware() {
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(
+            cors({
+                origin: "http://localhost:3000",
+                methods: ["GET", "POST", "DELETE", "PATCH", "OPTIONS"],
+                allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+            })
+        );
+    }
+    
     // initRoutes() {
     // }
     setErrorHandling() {
