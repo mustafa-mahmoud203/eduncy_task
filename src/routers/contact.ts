@@ -1,19 +1,20 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router } from "express";
 import ContactsController from "../controllers/contact.js";
+import ContactValidation from "../validations/contact.js";
 
 
 class ContactRouters {
     public router: Router;
 
-    constructor(private contactsController: ContactsController) {
+    constructor(private contactsController: ContactsController, private contactValidation: ContactValidation) {
         this.router = Router();
         this.initRoutes();
     }
 
     private initRoutes(): void {
 
-        this.router.post("/", this.contactsController.create.bind(this.contactsController));
-        this.router.get("/", this.contactsController.contacts.bind(this.contactsController));
+        this.router.post("/", this.contactValidation.addContact(), this.contactsController.create.bind(this.contactsController));
+        this.router.get("/", this.contactValidation.getContacts(), this.contactsController.contacts.bind(this.contactsController));
         // this.router.get("/:id", this.contactsController.contact.bind(this.contactsController));
         // this.router.patch("/:id", this.contactsController.updateContact.bind(this.contactsController));
         // this.router.delete("/", this.contactsController.create.softDelete(this.contactsController));
@@ -23,4 +24,4 @@ class ContactRouters {
     }
 }
 
-export default new ContactRouters(new ContactsController()).router;
+export default new ContactRouters(new ContactsController(), new ContactValidation()).router;

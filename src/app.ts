@@ -2,7 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 
 import AppError from './utils/appError.js';
-import ErrorHandling from './middleware/globalErrorHandling.js';
+import ErrorHandling from './middlewares/globalErrorHandling.js';
 import contactsRoutes from "./routers/contact.js"
 class App {
     private app: Express;
