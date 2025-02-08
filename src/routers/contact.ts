@@ -13,7 +13,7 @@ class ContactRouters {
     private initRoutes(): void {
 
         this.router.post("/", this.contactsController.create.bind(this.contactsController));
-        // this.router.get("/", this.contactsController.contacts.bind(this.contactsController));
+        this.router.get("/", this.contactsController.contacts.bind(this.contactsController));
         // this.router.get("/:id", this.contactsController.contact.bind(this.contactsController));
         // this.router.patch("/:id", this.contactsController.updateContact.bind(this.contactsController));
         // this.router.delete("/", this.contactsController.create.softDelete(this.contactsController));

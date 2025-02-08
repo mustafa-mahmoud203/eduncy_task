@@ -33,7 +33,28 @@ class ContactsController {
             return next(new AppError(err.message, 500))
         }
     }
+    public async contacts(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { company, is_deleted, created_after } = req.query
 
+            const isCompany = typeof company === "string" ? company : undefined;
+            const isDeleted = is_deleted ? is_deleted === "true" : undefined
+            const createdAfter = created_after ? new Date(created_after as string) : undefined
+
+            const contacts: IContact[] = await prisma.contact.findMany({
+                where: {
+                    company: isCompany,
+                    isDeleted,
+                    createdAt: createdAfter ? { gte: createdAfter } : undefined
+
+                }
+            })
+            return res.status(200).json({ message: "Doneeee", contacts })
+
+        } catch (err) {
+            return next(new AppError(err.message, 500))
+        }
+    }
 
 }
 
