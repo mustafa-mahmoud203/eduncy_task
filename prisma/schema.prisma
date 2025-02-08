@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Contact {
+  id         String     @id @default(uuid())
+  first_name String
+  last_name  String
+  email      String
+  company    String
+  balance    Decimal    @default(0.00)
+  isDeleted  Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  AuditLog   AuditLog[]
 
+  @@unique([email, company])
+}
+
+model AuditLog {
+  id         String     @id @default(uuid())
+  contactID  String
+  contact    Contact    @relation(fields: [contactID], references: [id])
+  changes    Json
+  changeType ChangeType
+  timestamp  DateTime   @default(now())
+}
+
+enum ChangeType {
+  UPDATE
+  DELETE
+}
