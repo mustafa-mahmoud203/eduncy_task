@@ -1,8 +1,9 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import AppError from './utils/appError.js';
-import ErrorHandling from './middleware/globalErrorHandling.js';
 import cors from 'cors';
 
+import AppError from './utils/appError.js';
+import ErrorHandling from './middleware/globalErrorHandling.js';
+import contactsRoutes from "./routers/contact.js"
 class App {
     private app: Express;
     private port: number;
@@ -13,7 +14,7 @@ class App {
         this.port = this.port = parseInt(process.env.PORT || '3000', 10);
 
         this.setMiddleware();
-        // this.initRoutes()
+        this.initRoutes()
         this.setErrorHandling()
     }
     setMiddleware() {
@@ -28,8 +29,9 @@ class App {
         );
     }
 
-    // initRoutes() {
-    // }
+    initRoutes() {
+        this.app.use("/contacts", contactsRoutes);
+    }
     setErrorHandling() {
         this.app.use("*", (req: Request, res: Response, next: NextFunction) => {
             return next(new AppError("Page Not Found", 404));
