@@ -49,13 +49,29 @@ class ContactsController {
 
                 }
             })
-            return res.status(200).json({ message: "Doneeee", contacts })
+            return res.status(200).json({ message: "Done", data: contacts })
 
         } catch (err) {
             return next(new AppError(err.message, 500))
         }
     }
+    public async contact(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
 
+            const contact: IContact | null = await prisma.contact.findUnique({
+                where: {
+                    id
+                }
+            })
+            if (!contact) return next(new AppError(`Contact not found`, 404))
+
+            return res.status(200).json({ message: "Done", data: contact })
+
+        } catch (err) {
+            return next(new AppError(err.message, 500))
+        }
+    }
 
 }
 

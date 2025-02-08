@@ -1,4 +1,4 @@
-import { body, query } from 'express-validator';
+import { body, param, query } from 'express-validator';
 import validationMiddleware from '../middlewares/validation.js';
 
 class ContactValidation {
@@ -57,6 +57,15 @@ class ContactValidation {
                 }),
 
 
+            validationMiddleware
+        ];
+    }
+
+    public getContact() {
+        return [
+            param("id")
+                .notEmpty().withMessage("ID is required")
+                .isUUID().withMessage("Invalid ID format"),
             validationMiddleware
         ];
     }
