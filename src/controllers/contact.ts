@@ -56,6 +56,7 @@ class ContactsController {
         }
     }
 
+
 }
 
 export default ContactsController

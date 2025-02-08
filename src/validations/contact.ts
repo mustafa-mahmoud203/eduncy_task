@@ -56,6 +56,7 @@ class ContactValidation {
                     return true;
                 }),
 
+
             validationMiddleware
         ];
     }

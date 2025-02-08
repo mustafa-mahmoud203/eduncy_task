@@ -7,6 +7,7 @@ function validationMiddleware(req: Request, res: Response, next: NextFunction): 
     if (!result.isEmpty()) {
         res.status(400).json({ errors: result.array() });
         return;
+
     }
 
     next();
