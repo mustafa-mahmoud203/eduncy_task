@@ -158,6 +158,49 @@ class ContactsController {
         }
     }
 
+    public async softDelete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+
+            const contact: IContact | null = await prisma.contact.findUnique({
+                where: {
+                    id
+                }
+            })
+            if (!contact) return next(new AppError(`Contact not found`, 404))
+
+            if (contact.isDeleted) {
+                return next(new AppError("Contact is already deleted", 400));
+            }
+
+            const softDel = await prisma.contact.update({
+                where: {
+                    id
+                },
+                data: {
+                    isDeleted: true
+                }
+
+            })
+
+            // add updates to audiolog
+            await prisma.auditLog.create({
+                data: {
+                    changeType: "DELETE",
+                    contactID: id,
+                    changes: {
+                        old: { isDeleted: false },
+                        new: { isDeleted: true }
+                    },
+                    timestamp: new Date()
+                }
+            });
+            return res.status(200).json({ message: "Done", data: softDel })
+
+        } catch (err) {
+            return next(new AppError(err.message, 500))
+        }
+    }
 }
 
 export default ContactsController

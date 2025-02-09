@@ -126,6 +126,15 @@ class ContactValidation {
         ];
     }
 
+
+    public deleteContact() {
+        return [
+            param("id")
+                .notEmpty().withMessage("ID is required")
+                .isUUID().withMessage("Invalid ID format"),
+            validationMiddleware
+        ];
+    }
 }
 
 export default ContactValidation
