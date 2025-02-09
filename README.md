@@ -53,21 +53,21 @@ docker-compose up --build
        ```
    - **Response**:
      ```json
-     {
-        "message": "Done",
-        "data": {
-            "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
-            "first_name": "Mustafa",
-            "last_name": "Mahmoud",
-            "email": "Mustafa@gmail.com",
-            "company": "eduncy",
-            "balance": "20000",
-            "isDeleted": false,
-            "createdAt": "2025-02-09T14:55:19.359Z",
-            "updatedAt": "2025-02-09T14:55:19.359Z"
-      }
-    }
-     ```
+           {
+              "message": "Done",
+              "data": {
+                  "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
+                  "first_name": "Mustafa",
+                  "last_name": "Mahmoud",
+                  "email": "Mustafa@gmail.com",
+                  "company": "eduncy",
+                  "balance": "20000",
+                  "isDeleted": false,
+                  "createdAt": "2025-02-09T14:55:19.359Z",
+                  "updatedAt": "2025-02-09T14:55:19.359Z"
+                 }
+           }
+    ```
 
 #### 2. **GET /contacts**
    - **Description**: List contacts with filtering by company, is_deleted, and created_after.
@@ -103,7 +103,7 @@ docker-compose up --build
             }
         ]
     }
-     ```
+   ```
 #### 3. **GET /contacts/{id}**
    - **Description**: Fetch a specific contact by ID.
    - **Request**:
@@ -125,7 +125,7 @@ docker-compose up --build
             "updatedAt": "2025-02-09T14:55:19.359Z"
         }
     }
-     ```
+   ```
 #### 4. **PATCH /contacts/{id}**
    - **Description**: Update a specific contact by ID.
    - **Request**:
@@ -154,7 +154,7 @@ docker-compose up --build
               "updatedAt": "2025-02-09T15:05:50.324Z"
         }
     }
-     ```
+   ```
 #### 5. **DELETE /contacts/{id}**
    - **Description**: Soft delete a specific Contact by ID.
    - **Request**:
