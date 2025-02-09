@@ -3,6 +3,7 @@ import prisma from "../utils/prisma.js";
 import { Request, Response, NextFunction } from "express";
 import AppError from "../utils/appError.js";
 import IContact from "../interfaces/contact.js";
+import ITransfer from "../interfaces/transfer.js";
 import getChanges from "../utils/getUpdateChanges.js";
 
 
@@ -196,6 +197,54 @@ class ContactsController {
                 }
             });
             return res.status(200).json({ message: "Done", data: softDel })
+
+        } catch (err) {
+            return next(new AppError(err.message, 500))
+        }
+    }
+
+    public async transfer(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { from_contact_id, to_contact_id, amount }: ITransfer = req.body
+            const formContact: IContact | null = await prisma.contact.findUnique({
+                where: { id: from_contact_id }
+            })
+            const toContact: IContact | null = await prisma.contact.findUnique({
+                where: { id: to_contact_id }
+            })
+
+            if (!formContact || !toContact) return next(new AppError("One of the accounts does not exist", 404))
+            if (formContact.isDeleted || toContact.isDeleted) return next(new AppError("One of the accounts is already deleted", 400))
+            if (formContact.balance < amount) return next(new AppError("Insufficient balance", 400))
+
+            await prisma.$transaction([
+                prisma.contact.update({ where: { id: from_contact_id }, data: { balance: { decrement: amount } } }),
+                prisma.contact.update({ where: { id: to_contact_id }, data: { balance: { increment: amount } } })
+            ])
+            await prisma.auditLog.createMany(
+                {
+                    data: [
+                        {
+                            contactID: from_contact_id,
+                            changeType: "UPDATE",
+                            changes: {
+                                old: { balance: formContact.balance },
+                                new: { balance: formContact.balance.minus(amount) }
+                            },
+                            timestamp: new Date()
+                        },
+                        {
+                            contactID: to_contact_id,
+                            changeType: "UPDATE",
+                            changes: {
+                                old: { balance: toContact.balance },
+                                new: { balance: toContact.balance.plus(amount) }
+                            },
+                            timestamp: new Date()
+
+                        }]
+                })
+            return res.status(200).json({ message: "The balance has been transferred successfully" })
 
         } catch (err) {
             return next(new AppError(err.message, 500))

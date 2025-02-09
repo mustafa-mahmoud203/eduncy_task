@@ -10,7 +10,7 @@ class ContactValidation {
             validationMiddleware
         ];
     }
-   
+
     public addContact() {
         return [
             body("first_name")
@@ -127,7 +127,22 @@ class ContactValidation {
         ];
     }
 
+    public transfer() {
+        return [
+            body("from_contact_id")
+                .notEmpty().withMessage("from_contact_id is required")
+                .isUUID().withMessage("Invalid ID format"),
+            body("to_contact_id")
+                .notEmpty().withMessage("to_contact_id is required")
+                .isUUID().withMessage("Invalid ID format"),
 
+            body("amount").notEmpty().withMessage("amount is required").custom(val => {
+                if (val < 0) throw new Error("amount cannot be negative");
+                return true;
+            }),
+            validationMiddleware
+        ];
+    }
 
 }
 
