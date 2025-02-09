@@ -37,6 +37,8 @@ docker-compose up --build
 
 # API Documentation
 ## Live API Documentation
+For detailed API documentation and testing, visit:
+
 🔗 **[Postman Live Documentation](https://documenter.getpostman.com/view/19871831/2sAYX9kfCc)**
  
 ### Example Endpoints
