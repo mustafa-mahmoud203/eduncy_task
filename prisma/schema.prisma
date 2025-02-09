@@ -21,6 +21,7 @@ model Contact {
   AuditLog   AuditLog[]
 
   @@unique([email, company])
+  @@index([id, email, company])
   @@map("Contact")
 }
 
@@ -31,6 +32,8 @@ model AuditLog {
   changes    Json
   changeType ChangeType
   timestamp  DateTime   @default(now())
+
+  @@index([contactID])
 }
 
 enum ChangeType {
