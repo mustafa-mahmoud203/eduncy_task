@@ -40,7 +40,7 @@ class ContactsController {
             const { company, is_deleted, created_after } = req.query
 
             const isCompany = typeof company === "string" ? company : undefined;
-            const isDeleted = is_deleted ? is_deleted === "true" : undefined
+            const isDeleted = is_deleted ? is_deleted === "true" : false
             const createdAfter = created_after ? new Date(created_after as string) : undefined
 
             const contacts: IContact[] = await prisma.contact.findMany({
