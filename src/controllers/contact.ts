@@ -196,7 +196,7 @@ class ContactsController {
                     timestamp: new Date()
                 }
             });
-            return res.status(200).json({ message: "Done", data: softDel })
+            return res.status(200).json({ message: "Contact has been deleted." })
 
         } catch (err) {
             return next(new AppError(err.message, 500))

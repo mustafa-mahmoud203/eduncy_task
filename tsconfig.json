@@ -10,12 +10,14 @@
     "outDir": "./dist",
     "rootDir": "./",
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "noImplicitAny": true
   },
   "include": [
     "src/**/*.ts",
+    "singleton.ts",
     // "**/*.ts"
   ],
   "exclude": [

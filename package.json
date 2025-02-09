@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "div": "npx tsc && nodemon dist/src/server.js",
     "start": "npx tsc && node dist/src/server.js"
   },
@@ -17,7 +17,14 @@
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0",
     "@types/express-validator": "^2.20.33",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.13.1",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "^4.0.0-beta1",
+    "prisma": "^6.3.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
