@@ -6,11 +6,19 @@ class ContactValidation {
         return [
             body("first_name")
                 .notEmpty().withMessage("First name is required")
-                .isString().withMessage("First name must be a string"),
+                .isString().withMessage("First name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("First name must be at least 3 characters")
+                .isLength({ max: 12 })
+                .withMessage("First name must be at most 12 characters"),
 
             body("last_name")
                 .notEmpty().withMessage("Last name is required")
-                .isString().withMessage("Last name must be a string"),
+                .isString().withMessage("Last name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("Last name must be at least 3 characters")
+                .isLength({ max: 12 })
+                .withMessage("Last name must be at most 12 characters"),
 
             body("email")
                 .notEmpty().withMessage("Email is required")
@@ -18,7 +26,11 @@ class ContactValidation {
 
             body("company")
                 .notEmpty().withMessage("Company name is required")
-                .isString().withMessage("Company name must be a string"),
+                .isString().withMessage("Company name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("company must be at least 3 characters")
+                .isLength({ max: 35 })
+                .withMessage("company must be at most 35 characters"),
 
             body("balance").optional().isFloat().withMessage("Balance must be a Decimal").custom(val => {
                 if (val < 0) throw new Error("Balance cannot be negative");
@@ -66,6 +78,50 @@ class ContactValidation {
             param("id")
                 .notEmpty().withMessage("ID is required")
                 .isUUID().withMessage("Invalid ID format"),
+            validationMiddleware
+        ];
+    }
+
+    public updateContact() {
+        return [
+            param("id")
+                .notEmpty().withMessage("ID is required")
+                .isUUID().withMessage("Invalid ID format"),
+            body("first_name")
+                .optional()
+                .isString().withMessage("First name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("First name must be at least 3 characters")
+                .isLength({ max: 12 })
+                .withMessage("First name must be at most 12 characters"),
+
+            body("last_name")
+                .optional()
+                .isString().withMessage("Last name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("Last name must be at least 3 characters")
+                .isLength({ max: 12 })
+                .withMessage("Last name must be at most 12 characters"),
+
+            body("email")
+                .optional()
+                .isEmail().withMessage("Invalid email format"),
+
+            body("company")
+                .optional()
+                .isString().withMessage("Company name must be a string")
+                .isLength({ min: 3 })
+                .withMessage("company must be at least 3 characters")
+                .isLength({ max: 35 })
+                .withMessage("company must be at most 35 characters"),
+
+            body("balance").optional().isFloat().withMessage("Balance must be a Decimal").custom(val => {
+                if (val < 0) throw new Error("Balance cannot be negative");
+                return true;
+            }),
+            body("isDeleted")
+                .optional()
+                .isBoolean().withMessage("isDeleted must be a boolean"),
             validationMiddleware
         ];
     }
