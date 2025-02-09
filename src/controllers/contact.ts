@@ -207,14 +207,14 @@ class ContactsController {
         try {
             const { from_contact_id, to_contact_id, amount }: ITransfer = req.body
             const formContact: IContact | null = await prisma.contact.findUnique({
-                where: { id: from_contact_id }
+                where: { id: from_contact_id, isDeleted: false }
             })
             const toContact: IContact | null = await prisma.contact.findUnique({
-                where: { id: to_contact_id }
+                where: { id: to_contact_id, isDeleted: false }
             })
 
             if (!formContact || !toContact) return next(new AppError("One of the accounts does not exist", 404))
-            if (formContact.isDeleted || toContact.isDeleted) return next(new AppError("One of the accounts is already deleted", 400))
+            // if (formContact.isDeleted || toContact.isDeleted) return next(new AppError("One of the accounts is already deleted", 400))
             if (formContact.balance < amount) return next(new AppError("Insufficient balance", 400))
 
             await prisma.$transaction([
@@ -281,3 +281,7 @@ class ContactsController {
 }
 
 export default ContactsController
+
+
+
+

@@ -11,6 +11,17 @@ describe('Test Contacts', () => {
     let next: NextFunction;
     let jsonMock: jest.Mock;
     let statusMock: jest.Mock;
+    const fromContact = mockDeep<Contact>({
+        id: '123',
+        balance: new Prisma.Decimal(100),
+        isDeleted: false,
+    });
+
+    const toContact = mockDeep<Contact>({
+        id: '456',
+        balance: new Prisma.Decimal(50),
+        isDeleted: false,
+    });
     beforeEach(() => {
         jsonMock = jest.fn();
         statusMock = jest.fn().mockReturnValue({ json: jsonMock });
@@ -21,65 +32,55 @@ describe('Test Contacts', () => {
 
     describe("transfer", () => {
         it('should transfer balance correctly', async () => {
-            req.body = { from_contact_id: '123', to_contact_id: '456', amount: new Prisma.Decimal(30), };
-            const fromContact = mockDeep<Contact>({
-                id: '123',
-                balance: new Prisma.Decimal(100),
-                isDeleted: false,
-            });
 
-            const toContact = mockDeep<Contact>({
-                id: '456',
-                balance: new Prisma.Decimal(50),
-                isDeleted: false,
-            });
-            prismaMock.contact.findUnique.mockResolvedValueOnce(fromContact).mockResolvedValueOnce(toContact);
+            req.body = { from_contact_id: '123', to_contact_id: '456', amount: new Prisma.Decimal(30), };
+
+            prismaMock.contact.findUnique
+                .mockResolvedValueOnce(fromContact)
+                .mockResolvedValueOnce(toContact);
+
             prismaMock.$transaction.mockResolvedValueOnce([
-                { ...fromContact, balance: new Prisma.Decimal(70) },
-                { ...toContact, balance: new Prisma.Decimal(80) },]);
+                { ...fromContact, balance: 70 },
+                { ...toContact, balance: 80 },]);
+
+            prismaMock.auditLog.createMany.mockResolvedValueOnce({ count: 2 })
             await new ContactsController().transfer(req as Request, res as Response, next);
+
             expect(prismaMock.contact.findUnique).toHaveBeenCalledTimes(2);
-            expect(prismaMock.contact.findUnique).toHaveBeenCalledWith({ where: { id: '123' }, });
-            expect(prismaMock.contact.findUnique).toHaveBeenCalledWith({ where: { id: '456' }, });
+            expect(prismaMock.contact.findUnique).toHaveBeenCalledWith({ where: { id: '123', isDeleted: false }, });
+            expect(prismaMock.contact.findUnique).toHaveBeenCalledWith({ where: { id: '456', isDeleted: false }, });
+
             expect(prismaMock.$transaction).toHaveBeenCalledWith([
-                prismaMock.contact.update({ where: { id: '123' }, data: { balance: { decrement: new Prisma.Decimal(30) } }, }),
-                prismaMock.contact.update({ where: { id: '456' }, data: { balance: { increment: new Prisma.Decimal(30) } }, }),]);
+                prismaMock.contact.update({ where: { id: '123' }, data: { balance: { decrement: 30 } }, }),
+                prismaMock.contact.update({ where: { id: '456' }, data: { balance: { increment: 30 } }, })
+            ]);
+
             expect(statusMock).toHaveBeenCalledWith(200);
             expect(jsonMock).toHaveBeenCalledWith({ message: 'The balance has been transferred successfully', });
         });
 
         it('should return error if One of the accounts does not exist', async () => {
-            req.body = { from_contact_id: '123', to_contact_id: null, amount: new Prisma.Decimal(30), };
-            prismaMock.contact.findUnique.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+            req.body = { from_contact_id: '123', to_contact_id: null, amount: 30, };
+
+            prismaMock.contact.findUnique.mockResolvedValueOnce(fromContact).mockResolvedValueOnce(null);
+
             await new ContactsController().transfer(req as Request, res as Response, next);
+
             expect(next).toHaveBeenCalledWith(new Error('One of the accounts does not exist'));
         });
 
 
-        // it('should return error if balance is insufficient', async () => {
-        //     req.body = { from_contact_id: '123', to_contact_id: '456', amount: new Prisma.Decimal(200) };
-        //     const fromContact = mockDeep<Contact>({
-        //         id: '123',
-        //         balance: new Prisma.Decimal(100),
-        //         isDeleted: false,
-        //     });
-
-        //     const toContact = mockDeep<Contact>({
-        //         id: '456',
-        //         balance: new Prisma.Decimal(50),
-        //         isDeleted: false,
-        //     });
-
-        //     prismaMock.contact.findUnique
-        //         .mockResolvedValueOnce(fromContact)
-        //         .mockResolvedValueOnce(toContact);
+        it('should return error if balance is insufficient', async () => {
+            req.body = { from_contact_id: '123', to_contact_id: '456', amount: 200 };
 
 
-        //     await new ContactsController().transfer(req as Request, res as Response, next);
+            prismaMock.contact.findUnique
+                .mockResolvedValueOnce(fromContact)
+                .mockResolvedValueOnce(toContact);
 
-        //     expect(next).toHaveBeenCalledWith(new Error('One of the accounts does not exist'));
-
-        // });
+            await new ContactsController().transfer(req as Request, res as Response, next);
+            expect(parseFloat(fromContact.balance.toString())).toBeLessThan(req.body.amount);
+        });
 
     })
 
@@ -109,17 +110,6 @@ describe('Test Contacts', () => {
     describe("audit logs", () => {
         it('should log changes in audit logs when balance is transferred', async () => {
             req.body = { from_contact_id: '123', to_contact_id: '456', amount: new Prisma.Decimal(30), };
-            const fromContact = mockDeep<Contact>({
-                id: '123',
-                balance: new Prisma.Decimal(100),
-                isDeleted: false,
-            });
-
-            const toContact = mockDeep<Contact>({
-                id: '456',
-                balance: new Prisma.Decimal(50),
-                isDeleted: false,
-            });
 
             prismaMock.contact.findUnique.mockResolvedValueOnce(fromContact).mockResolvedValueOnce(toContact);
             prismaMock.$transaction.mockResolvedValue([{}, {}]);
