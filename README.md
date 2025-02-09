@@ -67,43 +67,43 @@ docker-compose up --build
                   "updatedAt": "2025-02-09T14:55:19.359Z"
                  }
            }
-    ```
+     ```
 
 #### 2. **GET /contacts**
    - **Description**: List contacts with filtering by company, is_deleted, and created_after.
    - **Request**:(No request body needed)
    - **Response**:
      ```json
-     {
-        "message": "Done",
-        "length": 2,
-        "data": [
-           
-            {
-                "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
-                "first_name": "Mustafa",
-                "last_name": "Mahmoud",
-                "email": "Mustafa@gmail.com",
-                "company": "eduncy",
-                "balance": "20000",
-                "isDeleted": false,
-                "createdAt": "2025-02-09T14:55:19.359Z",
-                "updatedAt": "2025-02-09T14:55:19.359Z"
-            },
-            {
-                "id": "3533d3a2-ceeb-4074-8020-37226e0f9f44",
-                "first_name": "mohamed",
-                "last_name": "mahmoud",
-                "email": "mohamed@gmail.com",
-                "company": "google",
-                "balance": "18000",
-                "isDeleted": false,
-                "createdAt": "2025-02-09T14:16:56.529Z",
-                "updatedAt": "2025-02-09T14:16:56.529Z"
-            }
-        ]
-    }
-   ```
+          {
+             "message": "Done",
+             "length": 2,
+             "data": [
+                
+                 {
+                     "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
+                     "first_name": "Mustafa",
+                     "last_name": "Mahmoud",
+                     "email": "Mustafa@gmail.com",
+                     "company": "eduncy",
+                     "balance": "20000",
+                     "isDeleted": false,
+                     "createdAt": "2025-02-09T14:55:19.359Z",
+                     "updatedAt": "2025-02-09T14:55:19.359Z"
+                 },
+                 {
+                     "id": "3533d3a2-ceeb-4074-8020-37226e0f9f44",
+                     "first_name": "mohamed",
+                     "last_name": "mahmoud",
+                     "email": "mohamed@gmail.com",
+                     "company": "google",
+                     "balance": "18000",
+                     "isDeleted": false,
+                     "createdAt": "2025-02-09T14:16:56.529Z",
+                     "updatedAt": "2025-02-09T14:16:56.529Z"
+                 }
+             ]
+         }
+     ```
 #### 3. **GET /contacts/{id}**
    - **Description**: Fetch a specific contact by ID.
    - **Request**:
@@ -111,21 +111,21 @@ docker-compose up --build
        - `id`: UUID
    - **Response**:
      ```json
-     {
-        "message": "Done",
-        "data": {
-            "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
-            "first_name": "Mustafa",
-            "last_name": "Mahmoud",
-            "email": "Mustafa@gmail.com",
-            "company": "eduncy",
-            "balance": "20000",
-            "isDeleted": false,
-            "createdAt": "2025-02-09T14:55:19.359Z",
-            "updatedAt": "2025-02-09T14:55:19.359Z"
-        }
-    }
-   ```
+        {
+           "message": "Done",
+           "data": {
+               "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
+               "first_name": "Mustafa",
+               "last_name": "Mahmoud",
+               "email": "Mustafa@gmail.com",
+               "company": "eduncy",
+               "balance": "20000",
+               "isDeleted": false,
+               "createdAt": "2025-02-09T14:55:19.359Z",
+               "updatedAt": "2025-02-09T14:55:19.359Z"
+           }
+       }
+     ```
 #### 4. **PATCH /contacts/{id}**
    - **Description**: Update a specific contact by ID.
    - **Request**:
@@ -133,28 +133,28 @@ docker-compose up --build
        - `id`: UUID
      - **Request Body**:
        ```json
-       {
-          "email":"mostgafa_educty@gmail.com",
-          "isDeleted":true
-        }
+        {
+           "email":"mostgafa_educty@gmail.com",
+           "isDeleted":true
+         }
        ```
    - **Response**:
      ```json
-        {
-          "message": "Done",
-          "data": {
-              "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
-              "first_name": "Mustafa",
-              "last_name": "Mahmoud",
-              "email": "mostgafa_educty@gmail.com",
-              "company": "eduncy",
-              "balance": "20000",
-              "isDeleted": true,
-              "createdAt": "2025-02-09T14:55:19.359Z",
-              "updatedAt": "2025-02-09T15:05:50.324Z"
-        }
-    }
-   ```
+           {
+             "message": "Done",
+             "data": {
+                 "id": "d2c3e893-1425-4f5c-a9e9-e3d7431d581a",
+                 "first_name": "Mustafa",
+                 "last_name": "Mahmoud",
+                 "email": "mostgafa_educty@gmail.com",
+                 "company": "eduncy",
+                 "balance": "20000",
+                 "isDeleted": true,
+                 "createdAt": "2025-02-09T14:55:19.359Z",
+                 "updatedAt": "2025-02-09T15:05:50.324Z"
+           }
+       }
+     ```
 #### 5. **DELETE /contacts/{id}**
    - **Description**: Soft delete a specific Contact by ID.
    - **Request**:
@@ -171,11 +171,11 @@ docker-compose up --build
    - **Request**:
      - **Request Body**:
        ```json
-         {
-          "from_contact_id":"d2c3e893-1425-4f5c-a9e9-e3d7431d581a" (uuid),
-          "to_contact_id":"3533d3a2-ceeb-4074-8020-37226e0f9f44"   (uuid),
-          "amount":7000
-        }
+          {
+           "from_contact_id":"d2c3e893-1425-4f5c-a9e9-e3d7431d581a" (uuid),
+           "to_contact_id":"3533d3a2-ceeb-4074-8020-37226e0f9f44"   (uuid),
+           "amount":7000
+         }
        ```
    - **Response**:
      ```json
@@ -191,26 +191,26 @@ docker-compose up --build
        - `id`: UUID
    - **Response**:
      ```json
-       {
-          "message": "Done",
-          "length": 1,
-          "data": [
-              {
-                  "id": "e59f797a-db0e-4751-a8d7-426d42162c24",
-                  "contactID": "3533d3a2-ceeb-4074-8020-37226e0f9f44",
-                  "changes": {
-                      "new": {
-                          "balance": 25000
-                      },
-                      "old": {
-                          "balance": 18000
-                      }
-                  },
-                  "changeType": "UPDATE",
-                  "timestamp": "2025-02-09T15:16:01.797Z"
-              }
-          ]
-      }
+        {
+           "message": "Done",
+           "length": 1,
+           "data": [
+               {
+                   "id": "e59f797a-db0e-4751-a8d7-426d42162c24",
+                   "contactID": "3533d3a2-ceeb-4074-8020-37226e0f9f44",
+                   "changes": {
+                       "new": {
+                           "balance": 25000
+                       },
+                       "old": {
+                           "balance": 18000
+                       }
+                   },
+                   "changeType": "UPDATE",
+                   "timestamp": "2025-02-09T15:16:01.797Z"
+               }
+           ]
+       }
      ```
 
 # Stopping the Application
