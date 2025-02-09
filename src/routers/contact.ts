@@ -15,11 +15,11 @@ class ContactRouters {
 
         this.router.post("/", this.contactValidation.addContact(), this.contactsController.create.bind(this.contactsController));
         this.router.get("/", this.contactValidation.getContacts(), this.contactsController.contacts.bind(this.contactsController));
-        this.router.get("/:id", this.contactValidation.getContact(), this.contactsController.contact.bind(this.contactsController));
+        this.router.get("/:id", this.contactValidation.checkIdOnly(), this.contactsController.contact.bind(this.contactsController));
         this.router.patch("/:id", this.contactValidation.updateContact(), this.contactsController.updateContact.bind(this.contactsController));
-        this.router.delete("/:id", this.contactValidation.deleteContact(), this.contactsController.softDelete.bind(this.contactsController));
+        this.router.delete("/:id", this.contactValidation.checkIdOnly(), this.contactsController.softDelete.bind(this.contactsController));
         // this.router.post("/transfer", this.contactsController.transfer.bind(this.contactsController));
-        // this.router.get("/:id/audit", this.contactsController.audit.bind(this.contactsController));
+        this.router.get("/:id/audit", this.contactValidation.checkIdOnly(), this.contactsController.auditLogs.bind(this.contactsController));
 
     }
 }

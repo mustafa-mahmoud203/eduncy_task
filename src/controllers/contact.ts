@@ -50,7 +50,7 @@ class ContactsController {
 
                 }
             })
-            return res.status(200).json({ message: "Done", data: contacts })
+            return res.status(200).json({ message: "Done", length: contacts.length, data: contacts })
 
         } catch (err) {
             return next(new AppError(err.message, 500))
@@ -196,6 +196,34 @@ class ContactsController {
                 }
             });
             return res.status(200).json({ message: "Done", data: softDel })
+
+        } catch (err) {
+            return next(new AppError(err.message, 500))
+        }
+    }
+
+    public async auditLogs(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+
+            const contact: IContact | null = await prisma.contact.findUnique({
+                where: {
+                    id
+                }
+            })
+            if (!contact) return next(new AppError(`Contact not found`, 404))
+
+            const logs = await prisma.auditLog.findMany({
+                where: {
+                    contactID: id
+                }
+            })
+
+            if (logs.length === 0) {
+                return next(new AppError("No audit logs found for this contact", 404));
+            }
+
+            return res.status(200).json({ message: "Done", length: logs.length, data: logs })
 
         } catch (err) {
             return next(new AppError(err.message, 500))

@@ -2,6 +2,15 @@ import { body, param, query } from 'express-validator';
 import validationMiddleware from '../middlewares/validation.js';
 
 class ContactValidation {
+    public checkIdOnly() {
+        return [
+            param("id")
+                .notEmpty().withMessage("ID is required")
+                .isUUID().withMessage("Invalid ID format"),
+            validationMiddleware
+        ];
+    }
+   
     public addContact() {
         return [
             body("first_name")
@@ -73,14 +82,6 @@ class ContactValidation {
         ];
     }
 
-    public getContact() {
-        return [
-            param("id")
-                .notEmpty().withMessage("ID is required")
-                .isUUID().withMessage("Invalid ID format"),
-            validationMiddleware
-        ];
-    }
 
     public updateContact() {
         return [
@@ -127,14 +128,7 @@ class ContactValidation {
     }
 
 
-    public deleteContact() {
-        return [
-            param("id")
-                .notEmpty().withMessage("ID is required")
-                .isUUID().withMessage("Invalid ID format"),
-            validationMiddleware
-        ];
-    }
+
 }
 
 export default ContactValidation
