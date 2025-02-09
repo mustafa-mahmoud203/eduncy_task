@@ -94,7 +94,18 @@ describe('Test Contacts', () => {
                     last_name: 'mahmoud',
                     email: 'mustafa@example.com',
                     company: 'eduncy',
-                    balance: new Prisma.Decimal(100),
+                    balance: new Prisma.Decimal(20000),
+                    isDeleted: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                },
+                {
+                    id: '456',
+                    first_name: 'mohamed',
+                    last_name: 'mahmoud',
+                    email: 'mohamed@example.com',
+                    company: 'eduncy',
+                    balance: new Prisma.Decimal(10000),
                     isDeleted: false,
                     createdAt: new Date(),
                     updatedAt: new Date()
@@ -103,7 +114,7 @@ describe('Test Contacts', () => {
             await new ContactsController().contacts(req as Request, res as Response, next);
             expect(prismaMock.contact.findMany).toHaveBeenCalledWith({ where: { isDeleted: false, company: undefined, createdAt: undefined }, });
             expect(statusMock).toHaveBeenCalledWith(200);
-            expect(jsonMock).toHaveBeenCalledWith({ message: 'Done', length: 1, data: expect.any(Array), });
+            expect(jsonMock).toHaveBeenCalledWith({ message: 'Done', length: 2, data: expect.any(Array), });
         });
     })
 
