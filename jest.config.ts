@@ -10,18 +10,18 @@ const config = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/singleton.ts'],
   transform: {
-    '\\.[jt]sx?$': 'ts-jest'
+    '\\.[jt]sx?$': ['ts-jest', { useESM: true }]
   },
-  globals: {
-    'ts-jest': {
-      useESM: true
-    }
-  },
+  // globals: {
+  //   'ts-jest': {
+  //     useESM: true
+  //   }
+  // },
   moduleNameMapper: {
     '(.+)\\.js': '$1'
   },
-  extensionsToTreatAsEsm: ['.ts']
-
+  extensionsToTreatAsEsm: ['.ts'],
+  
 };
 
 module.exports = config;
