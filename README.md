@@ -10,6 +10,7 @@ Add an `.env` file in the root directory with the following content:
 ```bash
 DATABASE_URL="postgresql://root:123123@postgres_db:5432/crm_contact_db?schema=public"
 PORT=3000
+CORS_ORIGIN="http://localhost:3000"
 NODE_ENV="Production"
 POSTGRES_USER="root"
 POSTGRES_PASSWORD=123123
