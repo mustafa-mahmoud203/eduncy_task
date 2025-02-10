@@ -43,7 +43,13 @@ class ContactsController {
             const isDeleted = is_deleted ? is_deleted === "true" : false
             const createdAfter = created_after ? new Date(created_after as string) : undefined
 
+            const limit: number = parseInt(req.query.limit as string) || 50;
+            const page: number = parseInt(req.query.page as string) || 1
+            const skip: number = (page - 1) * limit
+
             const contacts: IContact[] = await prisma.contact.findMany({
+                skip,
+                take: limit,
                 where: {
                     company: isCompany,
                     isDeleted,

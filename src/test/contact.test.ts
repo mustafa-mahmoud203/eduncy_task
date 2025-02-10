@@ -86,7 +86,10 @@ describe('Test Contacts', () => {
 
     describe("soft delet", () => {
         it('should not return soft-deleted contacts in default listing', async () => {
-            req.query = {};
+            req.query = {
+                limit: '2',
+                page: '2',
+            };
             prismaMock.contact.findMany.mockResolvedValue([
                 {
                     id: '123',
@@ -112,7 +115,11 @@ describe('Test Contacts', () => {
                 }
                 ,]);
             await new ContactsController().contacts(req as Request, res as Response, next);
-            expect(prismaMock.contact.findMany).toHaveBeenCalledWith({ where: { isDeleted: false, company: undefined, createdAt: undefined }, });
+            expect(prismaMock.contact.findMany).toHaveBeenCalledWith({
+                skip: 2,
+                take: 2,
+                where: { isDeleted: false, company: undefined, createdAt: undefined },
+            });
             expect(statusMock).toHaveBeenCalledWith(200);
             expect(jsonMock).toHaveBeenCalledWith({ message: 'Done', length: 2, data: expect.any(Array), });
         });
